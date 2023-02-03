@@ -6,6 +6,8 @@ from flask import Flask, request
 from cloudevents.http import CloudEvent, from_http, to_binary
 from .invocation import Context
 
+INIT = False
+
 
 def load(path):
     """
@@ -25,6 +27,7 @@ def create(func):
 
     @app.route("/", methods=["POST"])
     def handle_post():
+        init(func)
         context = Context(request)
         try:
             context.cloud_event = from_http(request.headers,
@@ -35,6 +38,7 @@ def create(func):
 
     @app.route("/", methods=["GET"])
     def handle_get():
+        init(func)
         context = Context(request)
         return invoke(func, context)
 
@@ -61,3 +65,14 @@ def invoke(func, context):
         traceback.print_exc()
         print("caught", err)
         return f"Function raised {err}", 500
+
+
+def init(func):
+    """
+    Initialize func variables before inference
+    """
+    global INIT
+    if INIT == False:
+        print("run func init()", flush=True)
+        func.init()
+        INIT = True
