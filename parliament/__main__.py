@@ -17,8 +17,10 @@ def main():
         exit(1)
     signal.signal(signal.SIGTERM, receive_signal)
     signal.signal(signal.SIGINT, receive_signal)
+    print("I'm parliament-new")
     app = server.create(server.load(sys.argv[1]))
     serve(app, host='0.0.0.0', port=8080)
+    # stop here to make snapshot
 
 
 def receive_signal(signal_number, frame):

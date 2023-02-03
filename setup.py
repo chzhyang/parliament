@@ -30,8 +30,8 @@ setup(
 
     classifiers=[],
     entry_points={
-      "console_scripts": [
-        "parliament=parliament.__main__:main",
-      ]
+        "console_scripts": [
+            "parliament=parliament.__main__:main",
+        ]
     },
 )
